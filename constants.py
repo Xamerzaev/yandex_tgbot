@@ -1,0 +1,6 @@
+URL = 'https://xamerzaev.github.io/DikNus/'
+START_TEXT = 'Добро пожаловать!'
+START_BUTTON = 'Что-то не по ТЗ :)'
+SELFIE = 'Посмотреть последнее селфи разработчика'
+HIGH_SCHOOL_PHOTO = 'Посмотреть фото из старшей школы'
+GPT_VOICE = 'Войс бабушкам о gpt'
