@@ -7,7 +7,16 @@ from aiogram import Bot, Dispatcher, types, executor
 from aiogram.types import CallbackQuery
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from constants import URL, START_TEXT, START_BUTTON, SELFIE, HIGH_SCHOOL_PHOTO, GPT_VOICE
+from constants import (
+    URL,
+    START_TEXT,
+    START_BUTTON,
+    SELFIE,
+    HIGH_SCHOOL_PHOTO,
+    GPT_VOICE,
+    SELFIE_URL,
+    HIGH_SCHOOL_PHOTO_URL,
+)
 
 # Конфигурация логгера
 logging.basicConfig(level=logging.INFO)
@@ -23,7 +32,7 @@ dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
 
 
-@dp.message_handler(commands=['start'])
+@dp.message_handler(commands=["start"])
 async def start(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     markup.add(types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=URL)))
@@ -31,7 +40,9 @@ async def start(message: types.Message):
     await message.answer(START_TEXT, reply_markup=markup)
 
     selfie_button = InlineKeyboardButton(SELFIE, callback_data="selfie")
-    high_school_photo_button = InlineKeyboardButton(HIGH_SCHOOL_PHOTO, callback_data="high_school")
+    high_school_photo_button = InlineKeyboardButton(
+        HIGH_SCHOOL_PHOTO, callback_data="high_school"
+    )
 
     selfie_markup = InlineKeyboardMarkup().add(selfie_button, high_school_photo_button)
     await message.answer("Шедевры искусства. Пробуйте))", reply_markup=selfie_markup)
@@ -52,19 +63,19 @@ async def send_gpt_voice(message: types.Message):
 
 @dp.callback_query_handler(lambda c: c.data in ["selfie", "high_school"])
 async def send_photo_callback(callback_query: CallbackQuery):
-    photo_urls = {
-        "selfie": "https://imageup.ru/img109/4489967/img_2923.jpg",
-        "high_school": "https://imageup.ru/img288/4490900/photo_2023-08-23-125925.jpeg"
-    }
+    photo_urls = {"selfie": SELFIE_URL, "high_school": HIGH_SCHOOL_PHOTO_URL}
 
     photo_caption = {
         "selfie": "Вот мое последнее селфи! 😊",
-        "high_school": "Вот мое фото из старшей школы!"
+        "high_school": "Вот мое фото из старшей школы!",
     }
 
     data = callback_query.data
     if data in photo_urls:
-        await bot.send_photo(callback_query.from_user.id, photo_urls[data], caption=photo_caption[data])
+        await bot.send_photo(
+            callback_query.from_user.id, photo_urls[data], caption=photo_caption[data]
+        )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)

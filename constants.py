@@ -1,4 +1,6 @@
 URL = 'https://xamerzaev.github.io/DikNus/'
+SELFIE_URL = 'https://imageup.ru/img109/4489967/img_2923.jpg'
+HIGH_SCHOOL_PHOTO_URL = 'https://imageup.ru/img288/4490900/photo_2023-08-23-125925.jpeg'
 START_TEXT = 'Добро пожаловать!'
 START_BUTTON = 'Что-то не по ТЗ :)'
 SELFIE = 'Посмотреть последнее селфи разработчика'
