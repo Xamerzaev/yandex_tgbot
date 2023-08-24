@@ -8,7 +8,7 @@ from aiogram.types import CallbackQuery
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from constants import (
-    URL,
+    GITHUB_URL,
     START_TEXT,
     START_BUTTON,
     SELFIE,
@@ -39,11 +39,11 @@ button_labels = [GPT_VOICE, SQL_NOSQL_VOICE, FISRT_LOVE_VOICE]
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    markup.add(types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=URL)))
+
+    markup.add(types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=GITHUB_URL)))
+
     buttons = [types.KeyboardButton(label) for label in button_labels]
-    markup.add(
-        *buttons, types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=URL))
-    )
+    markup.add(*buttons)
 
     await message.answer(START_TEXT, reply_markup=markup)
 
