@@ -16,6 +16,8 @@ from constants import (
     GPT_VOICE,
     SELFIE_URL,
     HIGH_SCHOOL_PHOTO_URL,
+    SQL_NOSQL_VOICE,
+    FISRT_LOVE_VOICE,
 )
 
 # Конфигурация логгера
@@ -31,12 +33,18 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
 
+button_labels = [GPT_VOICE, SQL_NOSQL_VOICE, FISRT_LOVE_VOICE]
+
 
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     markup.add(types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=URL)))
-    markup.add(types.KeyboardButton(GPT_VOICE))
+    buttons = [types.KeyboardButton(label) for label in button_labels]
+    markup.add(
+        *buttons, types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=URL))
+    )
+
     await message.answer(START_TEXT, reply_markup=markup)
 
     selfie_button = InlineKeyboardButton(SELFIE, callback_data="selfie")
@@ -48,17 +56,31 @@ async def start(message: types.Message):
     await message.answer("Шедевры искусства. Пробуйте))", reply_markup=selfie_markup)
 
 
-@dp.message_handler(lambda message: message.text == GPT_VOICE)
-async def send_gpt_voice(message: types.Message):
+async def send_voice_with_logging_async(chat_id, audio_filename, log_message):
     try:
-        logger.info("Sending GPT voice...")
-        with open("audio/voice_gpt.ogg", "rb") as audio_file:
-            await bot.send_voice(message.from_user.id, audio_file)
-            logger.info("GPT voice sent successfully")
+        logger.info(f"Sending {log_message} voice...")
+        with open(audio_filename, "rb") as audio_file:
+            await bot.send_voice(chat_id, audio_file)
+            logger.info(f"{log_message} voice sent successfully")
     except Exception as e:
         logger.error(f"An error occurred: {e}")
     finally:
         logger.info("Finished processing callback")
+
+
+@dp.message_handler(
+    lambda message: message.text in [FISRT_LOVE_VOICE, SQL_NOSQL_VOICE, GPT_VOICE]
+)
+async def send_voice(message: types.Message):
+    chat_id = message.from_user.id
+    if message.text == FISRT_LOVE_VOICE:
+        await send_voice_with_logging_async(
+            chat_id, "audio/first_love.ogg", "first love"
+        )
+    elif message.text == SQL_NOSQL_VOICE:
+        await send_voice_with_logging_async(chat_id, "audio/sql_nosql.ogg", "SQL/NOSQL")
+    elif message.text == GPT_VOICE:
+        await send_voice_with_logging_async(chat_id, "audio/voice_gpt.ogg", "GPT")
 
 
 @dp.callback_query_handler(lambda c: c.data in ["selfie", "high_school"])
