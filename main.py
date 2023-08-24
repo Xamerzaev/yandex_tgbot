@@ -26,36 +26,43 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
+# Получение токена бота из .env файла
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
+# Создание экземпляров бота и хранилища
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp.middleware.setup(LoggingMiddleware())
 
+# Список меток для кнопок
 button_labels = [GPT_VOICE, SQL_NOSQL_VOICE, FISRT_LOVE_VOICE]
 
 
+# Обработчик команды /start
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
+    # Создание клавиатуры с кнопками
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-
     markup.add(types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=GITHUB_URL)))
-
     buttons = [types.KeyboardButton(label) for label in button_labels]
     markup.add(*buttons)
 
+    # Отправка стартового сообщения с клавиатурой
     await message.answer(START_TEXT, reply_markup=markup)
 
+    # Создание кнопок для инлайн-клавиатуры
     selfie_button = InlineKeyboardButton(SELFIE, callback_data="selfie")
     high_school_photo_button = InlineKeyboardButton(
         HIGH_SCHOOL_PHOTO, callback_data="high_school"
     )
-
     selfie_markup = InlineKeyboardMarkup().add(selfie_button, high_school_photo_button)
+
+    # Отправка сообщения с инлайн-клавиатурой
     await message.answer("Шедевры искусства. Пробуйте))", reply_markup=selfie_markup)
 
 
+# Функция для отправки голосовых сообщений с логированием
 async def send_voice_with_logging_async(chat_id, audio_filename, log_message):
     try:
         logger.info(f"Sending {log_message} voice...")
@@ -68,6 +75,7 @@ async def send_voice_with_logging_async(chat_id, audio_filename, log_message):
         logger.info("Finished processing callback")
 
 
+# Обработчик текстовых сообщений для отправки голосовых сообщений
 @dp.message_handler(
     lambda message: message.text in [FISRT_LOVE_VOICE, SQL_NOSQL_VOICE, GPT_VOICE]
 )
@@ -83,10 +91,10 @@ async def send_voice(message: types.Message):
         await send_voice_with_logging_async(chat_id, "audio/voice_gpt.ogg", "GPT")
 
 
+# Обработчик инлайн-клавиатуры для отправки фото
 @dp.callback_query_handler(lambda c: c.data in ["selfie", "high_school"])
 async def send_photo_callback(callback_query: CallbackQuery):
     photo_urls = {"selfie": SELFIE_URL, "high_school": HIGH_SCHOOL_PHOTO_URL}
-
     photo_caption = {
         "selfie": "Вот мое последнее селфи! 😊",
         "high_school": "Вот мое фото из старшей школы!",
@@ -99,5 +107,6 @@ async def send_photo_callback(callback_query: CallbackQuery):
         )
 
 
+# Запуск бота
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
