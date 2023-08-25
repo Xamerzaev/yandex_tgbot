@@ -42,6 +42,15 @@ button_labels = [GPT_VOICE, SQL_NOSQL_VOICE, FISRT_LOVE_VOICE]
 # Обработчик команды /start
 @dp.message_handler(commands=["start"])
 async def start(message: types.Message):
+    """
+    Обработчик команды /start.
+
+    Args:
+        message (types.Message): Входящее сообщение.
+
+    Returns:
+        None
+    """
     # Создание клавиатуры с кнопками
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     markup.add(types.KeyboardButton(START_BUTTON, web_app=WebAppInfo(url=GITHUB_URL)))
@@ -64,6 +73,17 @@ async def start(message: types.Message):
 
 # Функция для отправки голосовых сообщений с логированием
 async def send_voice_with_logging_async(chat_id, audio_filename, log_message):
+    """
+    Отправка голосовых сообщений с логированием.
+
+    Args:
+        chat_id: Идентификатор чата.
+        audio_filename: Путь к аудио файлу.
+        log_message: Сообщение для логирования.
+
+    Returns:
+        None
+    """
     try:
         logger.info(f"Sending {log_message} voice...")
         with open(audio_filename, "rb") as audio_file:
@@ -80,6 +100,15 @@ async def send_voice_with_logging_async(chat_id, audio_filename, log_message):
     lambda message: message.text in [FISRT_LOVE_VOICE, SQL_NOSQL_VOICE, GPT_VOICE]
 )
 async def send_voice(message: types.Message):
+    """
+    Обработчик текстовых сообщений для отправки голосовых сообщений.
+
+    Args:
+        message (types.Message): Входящее сообщение.
+
+    Returns:
+        None
+    """
     chat_id = message.from_user.id
     if message.text == FISRT_LOVE_VOICE:
         await send_voice_with_logging_async(
@@ -94,6 +123,15 @@ async def send_voice(message: types.Message):
 # Обработчик инлайн-клавиатуры для отправки фото
 @dp.callback_query_handler(lambda c: c.data in ["selfie", "high_school"])
 async def send_photo_callback(callback_query: CallbackQuery):
+    """
+    Обработчик инлайн-клавиатуры для отправки фото.
+
+    Args:
+        callback_query (CallbackQuery): Инлайн-клавиатура.
+
+    Returns:
+        None
+    """
     photo_urls = {"selfie": SELFIE_URL, "high_school": HIGH_SCHOOL_PHOTO_URL}
     photo_caption = {
         "selfie": "Вот мое последнее селфи! 😊",
