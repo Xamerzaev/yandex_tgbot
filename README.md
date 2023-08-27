@@ -1,39 +1,40 @@
-# Yandex_tz_bot
+# Телеграм-бот на основе aiogram
 
-Yandex_tz_bot is a Telegram bot for [Yandex's test task](https://yandex.ru/jobs/vacancies/interns/interns_smm/).
+![Telegram Bot](https://img.shields.io/badge/Telegram%20Bot-Aiogram-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## Table of Contents
+Данный Telegram-бот был разработан в рамках тестового задания от Yandex. Он демонстрирует применение библиотеки aiogram для создания ботов в Telegram с использованием Python.
 
-- [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
+## Оглавление
 
-## Description
+- [Описание](#описание)
+- [Установка](#установка)
+- [Использование](#использование)
+- [Вклад](#вклад)
+- [Лицензия](#лицензия)
 
-This Telegram bot was created as a part of Yandex's test task. It provides various features and serves as a showcase of using the aiogram library for building Telegram bots in Python.
+## Описание
 
-## Installation
+Этот Telegram-бот предоставляет несколько функций и демонстрирует возможности библиотеки aiogram для построения ботов в Telegram. Он поддерживает отправку голосовых сообщений и фотографий, а также предоставляет примеры использования клавиатур и инлайн-клавиатур.
 
-1. Clone the repository:
+## Установка
 
-   ```bash
-   git clone https://github.com/Xamerzaev/Yandex_tz_bot.git
+Для запуска бота на вашем компьютере, выполните следующие шаги:
 
-## Usage
+1. Активируйте виртуальную среду.
+2. Установите необходимые зависимости, выполнив команду: `pip install -r requirements.txt`.
+3. Создайте файл `.env` в корневой директории и запишите в него ваш `TELEGRAM_BOT_TOKEN`. Вы можете получить токен, создав нового бота через [BotFather в Telegram](https://core.telegram.org/bots#botfather).
+4. Запустите файл `main.py` для запуска бота.
+5. При необходимости, вы можете настроить названия кнопок и URL-адреса фотографий в файле `constants.py`.
 
-Once the bot is running, open Telegram and search for your bot by its username. Start a chat with the bot and explore its functionality.
+## Использование
 
-## Documentation
+Вы можете взаимодействовать с ботом, перейдя по ссылке: [@mahamerztestbot](https://t.me/mahamerztestbot) в Telegram. Бот предоставляет функции отправки голосовых сообщений и фотографий.
 
-You can find the complete documentation for this project [here](./_build/html/index.html).
+## Вклад
 
-## Contributing
+Если вы хотите внести свой вклад в развитие этого проекта, пожалуйста, создайте ветку, внесите изменения и отправьте Pull Request.
 
-We welcome contributions! Please check out our [Contribution Guidelines](CONTRIBUTING.md) and explore our [Documentation](./_build/html/index.html) to get started.
+## Лицензия
 
-## License
-
-This project is licensed under the [MIT License](LICENSE). Please refer to our [Documentation](./_build/html/index.html) for more details.
+Этот проект распространяется под лицензией MIT. Подробную информацию о лицензии вы найдете в файле [LICENSE](LICENSE) в корневой директории проекта.
